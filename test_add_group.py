@@ -13,11 +13,11 @@ class test_add_group(unittest.TestCase):
     def setUp(self):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
-    
-    def test_test_add_group(self):
-        success = True
-        wd = self.wd
+
+    def Open_Home_Page(self, wd):
         wd.get("http://localhost/addressbook/")
+
+    def Login(self, wd):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("Admin")
@@ -25,8 +25,14 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_css_selector("input[type=\"submit\"]").click()
+
+    def Open_Group_Page(self, wd):
         wd.find_element_by_link_text("groups").click()
+
+    def Create_Group(self, wd):
+        # Init Group creation
         wd.find_element_by_name("new").click()
+        # Fill Group form
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("FirstGroupName")
@@ -36,11 +42,24 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("FirstGroupFooter")
+        # Submit Group creation:
         wd.find_element_by_name("submit").click()
+
+    def Return_to_Groups_Page(self, wd):
         wd.find_element_by_link_text("group page").click()
+
+    def Logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
-        self.assertTrue(success)
-    
+
+    def test_test_add_group(self):
+        wd = self.wd
+        self.Open_Home_Page(wd)
+        self.Login(wd)
+        self.Open_Group_Page(wd)
+        self.Create_Group(wd)
+        self.Return_to_Groups_Page(wd)
+        self.Logout(wd)
+
     def tearDown(self):
         self.wd.quit()
 
